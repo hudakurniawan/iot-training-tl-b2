@@ -7,23 +7,23 @@ Di bab ini, kita menambahkan kemampuan membaca sensor arus AC nyata menggunakan 
 graph TD
     subgraph "ESP32 (Hardware)"
         SENS[Sensor PZEM-004T] -->|1. Baca Data Kelistrikan| ESP[Mikrokontroler ESP32]
-        ESP -->|4. Aktifkan/Matikan| REL[Modul Relay]
+        ESP -->|4. Aktifkan Relay| REL[Modul Relay]
     end
 
     subgraph "Jaringan Internet"
-        BROKER((Private Broker\nEMQX Serverless))
+        BROKER((Private Broker EMQX))
     end
 
-    subgraph "Klien (Laptop/PC)"
+    subgraph "Klien (Laptop PC)"
         MQTTX[Aplikasi MQTTX]
     end
 
     %% Aliran Data Telemetri (Naik ke Cloud)
-    ESP -->|2. Publish Format JSON\n(Topik: sensor/pzem)| BROKER
+    ESP -->|2. Publish JSON ke topik sensor| BROKER
     BROKER -->|Meneruskan Data| MQTTX
 
     %% Aliran Perintah Kontrol (Turun ke Perangkat)
-    MQTTX -->|3. Publish Pesan ON/OFF\n(Topik: dari_pc)| BROKER
+    MQTTX -->|3. Publish perintah ke topik kontrol| BROKER
     BROKER -->|Meneruskan Perintah| ESP
 ```
 
