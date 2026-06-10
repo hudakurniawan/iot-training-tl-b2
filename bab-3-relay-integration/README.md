@@ -5,11 +5,11 @@ Bab ini mulai menghubungkan dunia maya dengan perangkat keras fisik (aktuator). 
 ### Diagram Alir (Flowchart) Komunikasi
 ```mermaid
 graph TD
-    PC[MQTTX di PC] -- Publish "ON" --> BROKER((Private Broker))
-    BROKER -- Meneruskan --> ESP[ESP32]
+    PC[MQTTX di PC] -->|Publish pesan ON| BROKER((Private Broker))
+    BROKER -->|Meneruskan| ESP[ESP32]
     
-    ESP -- Cek: Apakah relay sedang OFF? --> RELAY_ACT{Ubah State\nke ON}
-    RELAY_ACT -- Ya, State Berubah --> CONFIRM[Publish "Status: LED MENYALA"]
+    ESP -->|Cek: Apakah relay sedang OFF?| RELAY_ACT{Ubah State\nke ON}
+    RELAY_ACT -->|Ya, State Berubah| CONFIRM[Publish pesan Status: LED MENYALA]
     CONFIRM --> BROKER
     BROKER --> PC
 ```
