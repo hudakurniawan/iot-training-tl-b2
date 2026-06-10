@@ -5,13 +5,26 @@ Di bab ini, kita menambahkan kemampuan membaca sensor arus AC nyata menggunakan 
 ### Diagram Alir (Flowchart) Komunikasi
 ```mermaid
 graph TD
-    ESP[ESP32] -- Baca Sensor tiap 5d --> SENS[PZEM-004T]
-    ESP -- Rakit string JSON --> JSON{JSON Payload}
-    JSON -- Publish --> BROKER((Private Broker))
-    
-    PC[MQTTX] -- Subscribe Sensor --> BROKER
-    PC -- Publish Perintah Relay --> BROKER
-    BROKER -- Meneruskan Perintah --> ESP
+    subgraph "ESP32 (Hardware)"
+        SENS[Sensor PZEM-004T] -->|1. Baca Data Kelistrikan| ESP[Mikrokontroler ESP32]
+        ESP -->|4. Aktifkan/Matikan| REL[Modul Relay]
+    end
+
+    subgraph "Jaringan Internet"
+        BROKER((Private Broker\nEMQX Serverless))
+    end
+
+    subgraph "Klien (Laptop/PC)"
+        MQTTX[Aplikasi MQTTX]
+    end
+
+    %% Aliran Data Telemetri (Naik ke Cloud)
+    ESP -->|2. Publish Format JSON\n(Topik: sensor/pzem)| BROKER
+    BROKER -->|Meneruskan Data| MQTTX
+
+    %% Aliran Perintah Kontrol (Turun ke Perangkat)
+    MQTTX -->|3. Publish Pesan ON/OFF\n(Topik: dari_pc)| BROKER
+    BROKER -->|Meneruskan Perintah| ESP
 ```
 
 ### Diagram Pengabelan (Wiring)
