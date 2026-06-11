@@ -34,7 +34,7 @@ PZEM004Tv30 pzem(Serial2, 16, 17);
 
 unsigned long lastMsg = 0; 
 
-float batas_daya_maks = 500.0; // Default batas daya 500 Watt
+float batas_daya_maks = 200.0; // Default batas daya 200 Watt
 bool is_tripped = false;       // Memori status trip (pemutus arus)
 bool is_relay_on = false;
 
