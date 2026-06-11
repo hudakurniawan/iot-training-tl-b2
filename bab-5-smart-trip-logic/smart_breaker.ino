@@ -14,11 +14,11 @@ const int   mqtt_port = 15214;
 const char* mqtt_user = "user_esp32";       
 const char* mqtt_pass = "pass_esp32";
 
-// Topik Publish
+// Topik Subscribe
 const char* topic_pub_sensor = "pelatihan/sensor/pzem"; 
 const char* topic_pub_alarm  = "pelatihan/notifikasi/alarm";
 
-// Topik Subscribe
+// Topik Publish
 const char* topic_sub_kontrol = "pelatihan/chat/dari_pc";
 const char* topic_sub_batas   = "pelatihan/pengaturan/batas_daya";
 const char* topic_sub_reset   = "pelatihan/perintah/reset";
