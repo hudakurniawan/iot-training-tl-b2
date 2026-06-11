@@ -7,16 +7,17 @@
 const char* ssid = "NAMA_WIFI";
 const char* password = "PASSWORD_WIFI";
 
-const char* mqtt_server = "xxx.emqxsl.com"; 
-const int   mqtt_port = 15214;              
-const char* mqtt_user = "user_esp32";       
-const char* mqtt_pass = "pass_esp32";       
+const char* mqtt_server = "NAMA_SERVER_EMQX.emqxsl.com"; 
+const int   mqtt_port = 8883;              
+const char* mqtt_user = "USERNAME_EMQX";       
+const char* mqtt_pass = "PASSWORD_EMQX";       
 
 const char* topic_publish = "pelatihan/chat/dari_esp32";
 const char* topic_subscribe = "pelatihan/chat/dari_pc";
 // ==========================================
 
-WiFiClient espClient;
+#include <WiFiClientSecure.h>
+WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
 // Fungsi ini dipanggil otomatis setiap kali ada pesan MQTT masuk
@@ -52,6 +53,9 @@ void reconnect() {
 void setup() {
   Serial.begin(115200);
   setup_wifi();
+  
+  espClient.setInsecure(); // Bypass sertifikat SSL
+  
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback); // Mengaktifkan fungsi penerima pesan
 }

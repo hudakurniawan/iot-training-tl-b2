@@ -10,7 +10,7 @@ const char* password = "PASSWORD_WIFI";
 
 // Konfigurasi Server ThingsBoard (Ubah jika menggunakan server private/berbeda)
 const char* mqtt_server = "demo.thingsboard.io"; 
-const int   mqtt_port = 1883;              
+const int   mqtt_port = 8883;              
 
 // Gunakan Access Token dari Device ThingsBoard Anda sebagai Username
 const char* mqtt_user = "ACCESS_TOKEN_ANDA";       
@@ -25,7 +25,8 @@ const int ledPin = 2; // Pin Modul Relay
 // ==========================================
 // STATE & VARIABEL GLOBAL
 // ==========================================
-WiFiClient espClient;
+#include <WiFiClientSecure.h>
+WiFiClientSecure espClient;
 PubSubClient client(espClient);
 PZEM004Tv30 pzem(Serial2, 16, 17);
 
@@ -107,6 +108,9 @@ void setup() {
   digitalWrite(ledPin, LOW);
 
   setup_wifi();
+  
+  espClient.setInsecure(); // Bypass sertifikat SSL ThingsBoard
+  
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
