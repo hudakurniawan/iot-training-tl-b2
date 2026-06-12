@@ -93,7 +93,8 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Konek ke ThingsBoard...");
     // ThingsBoard mengidentifikasi device murni dari Access Token (mqtt_user)
-    if (client.connect("ESP32_Client", mqtt_user, mqtt_pass)) {
+    String clientId = "ESP32Client-" + String(random(0xffff), HEX);
+    if (client.connect(clientId.c_str(), mqtt_user, mqtt_pass)) {
       Serial.println(" Berhasil!");
       client.subscribe(topic_rpc_sub); // Mendengarkan perintah dari Dashboard
     } else {
