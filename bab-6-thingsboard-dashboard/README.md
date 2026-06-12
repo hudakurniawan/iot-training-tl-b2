@@ -33,9 +33,18 @@ Perbedaan utama dari kode Bab 5 adalah:
    - Pada bagian *Datasource*, tambahkan *Entity* perangkat Anda, lalu pilih *data key* `tegangan`, `arus`, dan `daya`.
 
 4. **Membuat Tombol Kontrol (RPC):**
-   - **Tombol Sakelar (Relay):** Tambahkan *widget* **Control widgets** -> **Switch Control**. Di bagian *Advanced*, atur *RPC method* menjadi `setRelay`.
-   - **Tombol Reset:** Tambahkan *widget* **Control widgets** -> **Round switch** (atau tombol sejenisnya) dan atur *RPC method* menjadi `resetSistem`.
-   - **Input Batas Daya:** Tambahkan *widget* **Control widgets** -> **Knob Control** atau **Update Integer Attribute** dan atur *RPC method* menjadi `setBatasDaya`.
+   > **PENTING:** Secara *default*, ThingsBoard akan mencoba meminta nilai awal (*initial value*) dari perangkat saat dasbor dimuat. Karena perangkat kita belum diprogram untuk merespons pertanyaan nilai awal, **pastikan Anda menghapus centang (uncheck) opsi "Retrieve value using method"** di bagian *Advanced* pada setiap widget di bawah ini untuk mencegah *error Request Timeout*.
+
+   - **Tombol Sakelar (Relay):** Tambahkan *widget* **Control widgets** -> **Switch Control**.
+     - Di tab *Advanced*, hapus centang *Retrieve value using method*.
+     - Di bagian *Update value settings*, atur *RPC set value method* menjadi `setRelay`.
+   - **Tombol Reset (Trigger):** Tambahkan *widget* **Control widgets** -> **RPC Button** (jangan gunakan *switch* untuk aksi reset).
+     - Di tab *Advanced*, atur *RPC method* menjadi `resetSistem`.
+     - Atur *RPC method params* menjadi `{}`.
+     - Centang opsi **One-way request** (karena tombol ini tidak memerlukan balasan nilai).
+   - **Input Batas Daya:** Tambahkan *widget* **Control widgets** -> **Knob Control** (atau Slider).
+     - Di tab *Advanced*, hapus centang *Retrieve value using method* (atau *Initial value via RPC*).
+     - Atur *RPC set value method* menjadi `setBatasDaya`.
 
 ---
 
