@@ -40,7 +40,23 @@ void callback(char* topic, byte* payload, unsigned int length) {
   String message = "";
   for (int i = 0; i < length; i++) { message += (char)payload[i]; }
   
-  Serial.printf("\n[RPC MASUK] Pesan: %s\n", message.c_str());
+  Serial.printf("\n[RPC MASUK] Topik: %s | Pesan: %s\n", topic, message.c_str());
+
+  // =================================================================
+  // 0. MEMBALAS RPC (MENCEGAH "REQUEST TIMEOUT" DI DASHBOARD)
+  // =================================================================
+  String topicStr = String(topic);
+  if (topicStr.indexOf("request/") > 0) {
+    // Mengekstrak Request ID dari belakang topik (Misal: v1/devices/me/rpc/request/123 -> ambil 123)
+    String requestId = topicStr.substring(topicStr.lastIndexOf("/") + 1);
+    
+    // Merakit topik balasan khusus untuk request tersebut
+    String responseTopic = "v1/devices/me/rpc/response/" + requestId;
+    
+    // Mengirim JSON kosong "{}" sebagai tanda "Pesan Diterima & Dikerjakan"
+    client.publish(responseTopic.c_str(), "{}"); 
+  }
+  // =================================================================
 
   // ThingsBoard mengirim perintah dalam format JSON. Contoh: {"method":"setRelay","params":true}
   // Catatan: Untuk keamanan produksi, disarankan menggunakan library ArduinoJson. 
