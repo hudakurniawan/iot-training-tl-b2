@@ -43,8 +43,9 @@ Perbedaan utama dari kode Bab 5 adalah:
      - Atur *RPC method params* menjadi `{}`.
      - Centang opsi **One-way request** (karena tombol ini tidak memerlukan balasan nilai).
    - **Input Batas Daya:** Tambahkan *widget* **Control widgets** -> **Knob Control** (atau Slider).
-     - Di tab *Advanced*, hapus centang *Retrieve value using method* (atau *Initial value via RPC*).
-     - Atur *RPC set value method* menjadi `setBatasDaya`.
+     - Pada UI ThingsBoard terbaru, masuk ke bagian **Behavior** di pengaturan widget.
+     - Pada baris **Initial state**, klik ikon pensil (Edit) dan ubah agar **TIDAK** menggunakan *Execute RPC method* (Anda bisa mengubahnya ke *Static value* atau mematikannya). Ini mencegah *timeout* saat halaman baru dimuat.
+     - Pada baris eksekusi perubahan nilai (misal: *Left/Right button click* atau *Value changed*), pastikan RPC method yang dipanggil adalah `setBatasDaya`.
 
 ---
 
